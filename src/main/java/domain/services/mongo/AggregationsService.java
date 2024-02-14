@@ -5,7 +5,6 @@ import domain.model.ErrorC;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
-
 import java.util.List;
 
 public class AggregationsService {

@@ -1,34 +1,32 @@
 package ui.mongo.mains.CustomerAndCredential;
 
-import domain.services.mongo.CredentialsServiceM;
+import domain.model.mongo.CustomersMongo;
+import domain.model.mongo.OrderMongo;
 import domain.services.mongo.CustomerServiceM;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
+import java.util.Collections;
+import java.util.List;
 
 public class DeleteCustomerM {
 
     private final CustomerServiceM customerServiceM;
-    private final CredentialsServiceM credentialsServiceM;
 
     @Inject
-    public DeleteCustomerM(CustomerServiceM customerServiceM, CredentialsServiceM credentialsServiceM) {
+    public DeleteCustomerM(CustomerServiceM customerServiceM) {
         this.customerServiceM = customerServiceM;
-        this.credentialsServiceM = credentialsServiceM;
     }
 
     public static void main(String[] args) {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         DeleteCustomerM deleteCustomerM = container.select(DeleteCustomerM.class).get();
 
-        ObjectId objectIdCred = new ObjectId("65c28f5b941c002bf4e18b9d");
-        int deletedCredentials = deleteCustomerM.credentialsServiceM.delete(objectIdCred).get();
-
-        ObjectId objectIdCust = new ObjectId("65c285e0789f9d78fda81290");
-        int deletedCustomer = deleteCustomerM.customerServiceM.delete(objectIdCust).get();
-
-        System.out.println(deletedCredentials);
+        List<OrderMongo> orders = Collections.emptyList();
+        ObjectId objectId = new ObjectId("65cc9d7239bf7a0fb0ade0ae");
+        CustomersMongo newCustomer = new CustomersMongo(objectId,"Gio","Gio","gmail","34525352525","2002-03-03", orders);
+        int deletedCustomer = deleteCustomerM.customerServiceM.delete(newCustomer).get();
         System.out.println(deletedCustomer);
     }
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface CustomersDAOM {
     Either<ErrorC, List<CustomersMongo>> getAll();
+    Either<ErrorC, List<CustomersMongo>> getAllWithoutOrders();
     Either<ErrorC, CustomersMongo> get(ObjectId id);
-    Either<ErrorC, CustomersMongo> add(CustomersMongo customers);
-    Either<ErrorC, Integer> update(CustomersMongo customers);
-    Either<ErrorC, Integer> delete(ObjectId id);
+    Either<ErrorC, CustomersMongo> add(CustomersMongo customer);
+    Either<ErrorC, Integer> update(CustomersMongo customer);
+    Either<ErrorC, Integer> delete(CustomersMongo customer);
 }

@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import common.Constants;
 import common.configuration.JPAUtil;
 import common.configuration.MongoDBConfig;
-import dao.transfers.HibernateToMongoDAO;
+import dao.transfers.TransferMongoToHibernateDAO;
 import domain.model.ErrorC;
 import domain.model.hibernate.*;
 import domain.model.mongo.*;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HibernateToMongoToMongoDAOImpl implements HibernateToMongoDAO {
+public class TransferMongoToHibernateDAOImpl implements TransferMongoToHibernateDAO {
 
     private final JPAUtil jpaUtil;
     private final MongoDatabase mongoDatabase;
@@ -27,13 +27,13 @@ public class HibernateToMongoToMongoDAOImpl implements HibernateToMongoDAO {
     private EntityManager em;
 
     @Inject
-    public HibernateToMongoToMongoDAOImpl(JPAUtil jpaUtil) {
+    public TransferMongoToHibernateDAOImpl(JPAUtil jpaUtil) {
         this.jpaUtil = jpaUtil;
         this.mongoDatabase = MongoDBConfig.getMongoDatabase();
     }
 
     @Override
-    public Either<ErrorC, Integer> transferHibernateToMongo() {
+    public Either<ErrorC, Integer> transferMongoToHibernate() {
         Either<ErrorC, Integer> either;
         try {
             List<MenuItem> menuItems = getAllMenuItems().getOrElse(Collections.emptyList());

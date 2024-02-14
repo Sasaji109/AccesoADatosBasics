@@ -1,6 +1,7 @@
 package dao.mongo.implementations;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -8,7 +9,9 @@ import com.mongodb.client.result.UpdateResult;
 import common.Constants;
 import common.configuration.MongoDBConfig;
 import dao.mongo.CustomersDAOM;
+import domain.adapter.ObjectIdAdapter;
 import domain.model.ErrorC;
+import domain.model.mongo.CredentialsMongo;
 import domain.model.mongo.CustomersMongo;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
@@ -20,10 +23,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.fields;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class CustomersDAOMImplM implements CustomersDAOM {
+
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(ObjectId.class, new ObjectIdAdapter())
+            .create();
 
     private final MongoDatabase mongoDatabase;
 
@@ -40,6 +49,27 @@ public class CustomersDAOMImplM implements CustomersDAOM {
             MongoCollection<Document> est = mongoDatabase.getCollection("customers");
             List<CustomersMongo> customers = new ArrayList<>();
             List<Document> documents = est.find().into(new ArrayList<>());
+
+            for (Document supplier : documents) {
+                customers.add(new Gson().fromJson(supplier.toJson(), CustomersMongo.class));
+            }
+            either = Either.right(customers);
+
+        } catch(Exception e) {
+            either = Either.left(new ErrorC(5, Constants.MONGO_ERROR + e.getMessage(), LocalDate.now()));
+        }
+
+        return either;
+    }
+
+    @Override
+    public Either<ErrorC, List<CustomersMongo>> getAllWithoutOrders() {
+        Either<ErrorC, List<CustomersMongo>> either;
+
+        try {
+            MongoCollection<Document> est = mongoDatabase.getCollection("customers");
+            List<CustomersMongo> customers = new ArrayList<>();
+            List<Document> documents = est.find().projection(fields(exclude("orders"))).into(new ArrayList<>());
 
             for (Document supplier : documents) {
                 customers.add(new Gson().fromJson(supplier.toJson(), CustomersMongo.class));
@@ -83,8 +113,17 @@ public class CustomersDAOMImplM implements CustomersDAOM {
 
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
-            Document document = Document.parse(new Gson().toJson(customer));
+            MongoCollection<Document> credentialsCollection = mongoDatabase.getCollection("credentials");
+
+            CustomersMongo customersMongo = new CustomersMongo(customer.get_id(), customer.getFirst_name(), customer.getLast_name(), customer.getEmail(), customer.getPhone(), customer.getDate_of_birth(), customer.getOrders());
+            Document document = Document.parse(gson.toJson(customersMongo));
             customersCollection.insertOne(document);
+
+            ObjectId customerId = (ObjectId) document.get("_id");
+            CredentialsMongo credentialsMongo = new CredentialsMongo(customerId,customer.getCredentialsMongo().getUser_name(), customer.getCredentialsMongo().getPassword());
+            Document credentialDocument = Document.parse(gson.toJson(credentialsMongo));
+            credentialsCollection.insertOne(credentialDocument);
+
             either = Either.right(customer);
         }
         catch (Exception e) {
@@ -113,12 +152,15 @@ public class CustomersDAOMImplM implements CustomersDAOM {
     }
 
     @Override
-    public Either<ErrorC, Integer> delete(ObjectId id) {
+    public Either<ErrorC, Integer> delete(CustomersMongo customer) {
         Either<ErrorC, Integer> either;
 
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
-            customersCollection.deleteOne(eq("_id", id));
+            MongoCollection<Document> credentialsCollection = mongoDatabase.getCollection("credentials");
+
+            customersCollection.deleteOne(eq("_id", customer.get_id()));
+            credentialsCollection.deleteOne(eq("_id", customer.get_id()));
             either = Either.right(1);
         }
         catch (Exception e) {

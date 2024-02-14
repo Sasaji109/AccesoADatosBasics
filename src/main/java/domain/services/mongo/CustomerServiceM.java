@@ -6,7 +6,6 @@ import domain.model.mongo.CustomersMongo;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
-
 import java.util.List;
 
 public class CustomerServiceM {
@@ -18,6 +17,9 @@ public class CustomerServiceM {
     public Either<ErrorC, List<CustomersMongo>> getAll() {
         return dao.getAll();
     }
+    public Either<ErrorC, List<CustomersMongo>> getAllWithoutOrders() {
+        return dao.getAllWithoutOrders();
+    }
     public Either<ErrorC, CustomersMongo> get(ObjectId id) {
         return dao.get(id);
     }
@@ -27,7 +29,7 @@ public class CustomerServiceM {
     public Either<ErrorC, Integer> update(CustomersMongo customers) {
         return dao.update(customers);
     }
-    public Either<ErrorC, Integer> delete(ObjectId id) {
-        return dao.delete(id);
+    public Either<ErrorC, Integer> delete(CustomersMongo customers) {
+        return dao.delete(customers);
     }
 }

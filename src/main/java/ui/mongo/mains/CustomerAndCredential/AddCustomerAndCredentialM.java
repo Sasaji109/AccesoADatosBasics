@@ -7,28 +7,27 @@ import domain.services.mongo.CustomerServiceM;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
-import org.bson.types.ObjectId;
 import java.util.Collections;
 import java.util.List;
 
-public class UpdateCustomerM {
+public class AddCustomerAndCredentialM {
 
     private final CustomerServiceM customerServiceM;
 
     @Inject
-    public UpdateCustomerM(CustomerServiceM customerServiceM) {
+    public AddCustomerAndCredentialM(CustomerServiceM customerServiceM) {
         this.customerServiceM = customerServiceM;
     }
 
     public static void main(String[] args) {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
-        UpdateCustomerM updateCustomerM = container.select(UpdateCustomerM.class).get();
+        AddCustomerAndCredentialM addCustomerAndCredentialM = container.select(AddCustomerAndCredentialM.class).get();
 
-        ObjectId objectId = new ObjectId("65cca33388aedd402cc8da57");
+        CredentialsMongo newCredentials = new CredentialsMongo(null, "gio", "gio");
         List<OrderMongo> orders = Collections.emptyList();
-        CustomersMongo newCustomer = new CustomersMongo(objectId,"Gio","Sanchez","gmail","34525352525","2002-03-03", orders);
-        int updateCustomerInt = updateCustomerM.customerServiceM.update(newCustomer).getOrElse(2);
-        System.out.println(updateCustomerInt);
+        CustomersMongo newCustomer = new CustomersMongo(null,"Gio","Gio","gmail","34525352525","2002-03-03", orders, newCredentials);
+        CustomersMongo addedCustomer = addCustomerAndCredentialM.customerServiceM.add(newCustomer).get();
+        System.out.println("Nuevo customer añadido: " + addedCustomer);
     }
 }
 
