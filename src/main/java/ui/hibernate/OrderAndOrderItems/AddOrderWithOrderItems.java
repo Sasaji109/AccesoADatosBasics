@@ -26,10 +26,10 @@ public class AddOrderWithOrderItems {
 
         MenuItem menuItem = new MenuItem(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem1 = new OrderItem(null,null,menuItem,2);
+        OrderItem orderItem1 = new OrderItem(null,null,menuItem,10);
         orderItems.add(orderItem1);
 
-        Order newOrder = new Order(null, LocalDateTime.now(), 50,4, orderItems);
+        Order newOrder = new Order(null, LocalDateTime.now(), 50,1, orderItems);
         int addedOrder = addOrderWithOrderItems.orderService.add(newOrder).getOrElse(2);
         System.out.println(addedOrder);
     }

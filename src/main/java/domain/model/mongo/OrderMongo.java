@@ -1,7 +1,6 @@
 package domain.model.mongo;
 
 import lombok.*;
-
 import java.util.List;
 
 @AllArgsConstructor

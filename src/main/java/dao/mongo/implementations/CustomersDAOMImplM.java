@@ -2,7 +2,6 @@ package dao.mongo.implementations;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
@@ -16,8 +15,6 @@ import domain.model.mongo.CustomersMongo;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import org.bson.Document;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,8 +22,6 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Projections.fields;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class CustomersDAOMImplM implements CustomersDAOM {
 

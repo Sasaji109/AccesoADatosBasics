@@ -15,7 +15,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
