@@ -18,7 +18,7 @@ public class Aggregation1B {
     public static void main(String[] args) {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         Aggregation1B aggregation1B = container.select(Aggregation1B.class).get();
-        ObjectId objectId = new ObjectId("65c6057ed28e0f3d316b88be");
+        ObjectId objectId = new ObjectId("65cca33388aedd402cc8da57");
         System.out.println(aggregation1B.aggregationsService.aggregationB(objectId));
     }
 }

@@ -24,10 +24,9 @@ public class UpdateOrderM {
         UpdateOrderM updateOrderM = container.select(UpdateOrderM.class).get();
 
         List<OrderItemMongo> orderItems = Collections.emptyList();
-        OrderMongo newOrder = new OrderMongo("2002-02-02", 10, orderItems);
-        ObjectId objectIdCust = new ObjectId("65c247641544345e6e5e9639");
-        int updatedOrder = updateOrderM.orderServiceM.update(newOrder, objectIdCust).get();
-
+        OrderMongo newOrder = new OrderMongo("2004-02-02", 8, orderItems);
+        ObjectId objectIdCust = new ObjectId("65cc901f2c6b79707fcd6c18");
+        int updatedOrder = updateOrderM.orderServiceM.update(newOrder, objectIdCust).getOrElse(2);
         System.out.println(updatedOrder);
     }
 }

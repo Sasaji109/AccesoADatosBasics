@@ -1,6 +1,5 @@
 package ui.mongo.mains.CustomerAndCredential;
 
-import domain.model.mongo.CredentialsMongo;
 import domain.model.mongo.CustomersMongo;
 import domain.model.mongo.OrderMongo;
 import domain.services.mongo.CustomerServiceM;
@@ -26,7 +25,7 @@ public class UpdateCustomerM {
 
         ObjectId objectId = new ObjectId("65cca33388aedd402cc8da57");
         List<OrderMongo> orders = Collections.emptyList();
-        CustomersMongo newCustomer = new CustomersMongo(objectId,"Gio","Sanchez","gmail","34525352525","2002-03-03", orders);
+        CustomersMongo newCustomer = new CustomersMongo(objectId,"Gio","gio","gmail","34525352525","2002-03-03", orders);
         int updateCustomerInt = updateCustomerM.customerServiceM.update(newCustomer).getOrElse(2);
         System.out.println(updateCustomerInt);
     }

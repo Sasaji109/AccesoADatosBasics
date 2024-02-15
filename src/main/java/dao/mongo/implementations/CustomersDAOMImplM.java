@@ -138,12 +138,17 @@ public class CustomersDAOMImplM implements CustomersDAOM {
         Either<ErrorC, Integer> either;
 
         try {
-            CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-            fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-            MongoCollection<CustomersMongo> customersCollection = mongoDatabase.getCollection("customers", CustomersMongo.class).withCodecRegistry(pojoCodecRegistry);
-            UpdateResult result = customersCollection.replaceOne(eq("_id", customer.get_id()), customer);
+            MongoCollection<Document> collectionCustomers = mongoDatabase.getCollection("customers");
+            String customerJson = gson.toJson(customer);
+            Document customerDocument = Document.parse(customerJson);
+            Document filter = new Document("_id", customer.get_id());
+            UpdateResult updateResult = collectionCustomers.replaceOne(filter, customerDocument);
 
-            either = Either.right((int) result.getModifiedCount());
+            if (updateResult.getModifiedCount() > 0) {
+                either = Either.right(1);
+            } else {
+                either = Either.left(new ErrorC(5, Constants.MONGO_ERROR, LocalDate.now()));
+            }
         } catch (Exception e) {
             either = Either.left(new ErrorC(5, Constants.MONGO_ERROR + e.getMessage(), LocalDate.now()));
         }

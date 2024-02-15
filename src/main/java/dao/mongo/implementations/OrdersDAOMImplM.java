@@ -1,12 +1,14 @@
 package dao.mongo.implementations;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
 import common.Constants;
 import common.configuration.MongoDBConfig;
 import dao.mongo.OrdersDAOM;
+import domain.adapter.ObjectIdAdapter;
 import domain.model.ErrorC;
 import domain.model.mongo.CustomersMongo;
 import domain.model.mongo.OrderMongo;
@@ -24,6 +26,8 @@ import static com.mongodb.client.model.Updates.*;
 public class OrdersDAOMImplM implements OrdersDAOM {
 
     private final MongoDatabase mongoDatabase;
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(ObjectId.class, new ObjectIdAdapter()).create();
+
 
     @Inject
     public OrdersDAOMImplM() {
@@ -37,9 +41,7 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
             List<OrderMongo> allOrders = new ArrayList<>();
-            List<Document> customerDocuments = customersCollection.find().into(new ArrayList<>());
-
-            for (Document customerDocument : customerDocuments) {
+            for (Document customerDocument : customersCollection.find()) {
                 CustomersMongo customer = new Gson().fromJson(customerDocument.toJson(), CustomersMongo.class);
 
                 if (customer.getOrders() != null) {
@@ -62,10 +64,19 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
 
-            UpdateResult updateResult = customersCollection.updateOne(eq("_id", customerId),
-                    addToSet("orders", Document.parse(new Gson().toJson(order))));
+            Document query = new Document("_id", customerId);
+            Document customerDoc = customersCollection.find(query).first();
 
-            if (updateResult.getModifiedCount() > 0) {
+            if (customerDoc != null) {
+                List<Document> ordersDoc = (List<Document>) customerDoc.get("orders");
+                String orderJson = gson.toJson(order);
+
+                Document newOrderDoc = Document.parse(orderJson);
+                newOrderDoc.put("order_date", order.getOrder_date());
+                ordersDoc.add(newOrderDoc);
+
+                customersCollection.updateOne(query, new Document("$set", new Document("orders", ordersDoc)));
+
                 either = Either.right(1);
             } else {
                 either = Either.left(new ErrorC(404, Constants.CUSTOMER_NOT_FOUND, LocalDate.now()));
@@ -108,15 +119,13 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
 
-            UpdateResult updateResult = customersCollection.updateOne(
-                    eq("_id", customerId), pull("orders", eq("order_date", order.getOrder_date()))
-            );
+            UpdateResult updateResult = customersCollection.updateOne(eq("_id", customerId), pull("orders", eq("order_date", order.getOrder_date())));
+
             if (updateResult.getModifiedCount() > 0) {
                 either = Either.right(1);
             } else {
                 either = Either.left(new ErrorC(404, Constants.CUSTOMER_NOT_FOUND, LocalDate.now()));
             }
-
         } catch (Exception e) {
             either = Either.left(new ErrorC(5, Constants.MONGO_ERROR + e.getMessage(), LocalDate.now()));
         }
