@@ -98,6 +98,7 @@ public class CustomersDAOImpl implements CustomersDAO {
     @Override
     public Either<ErrorC, Integer> update(Customers customer) {
         Either<ErrorC, Integer> either;
+        Credentials credential = customer.getCredentials();
 
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -106,6 +107,7 @@ public class CustomersDAOImpl implements CustomersDAO {
             tx.begin();
             Customers customer1 = new Customers(customer.getCustomersId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
             em.merge(customer1);
+            em.merge(credential);
             tx.commit();
 
             int rowsAffected = 1;
@@ -130,7 +132,6 @@ public class CustomersDAOImpl implements CustomersDAO {
         tx.begin();
 
         try {
-
             if (orders) {
                 List<Order> ordersList = em.createQuery("SELECT o FROM Order o WHERE o.customerId = :customerId", Order.class)
                         .setParameter("customerId", customer.getCustomersId()).getResultList();

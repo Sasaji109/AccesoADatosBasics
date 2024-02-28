@@ -23,9 +23,10 @@ public class DeleteCustomerM {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         DeleteCustomerM deleteCustomerM = container.select(DeleteCustomerM.class).get();
 
+
+        ObjectId objectId = new ObjectId("65df0978f6296e1888be1eb3");
         List<OrderMongo> orders = Collections.emptyList();
-        ObjectId objectId = new ObjectId("65cc9d7239bf7a0fb0ade0ae");
-        CustomersMongo newCustomer = new CustomersMongo(objectId,"Gio","Gio","gmail","34525352525","2002-03-03", orders);
+        CustomersMongo newCustomer = new CustomersMongo(objectId,"c","ccc","gmail","342352","2002-03-03", orders);
         int deletedCustomer = deleteCustomerM.customerServiceM.delete(newCustomer).get();
         System.out.println(deletedCustomer);
     }

@@ -21,8 +21,8 @@ public class AddCustomerAndCredential {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         AddCustomerAndCredential addCustomerAndCredential = container.select(AddCustomerAndCredential.class).get();
 
-        Credentials credentials = new Credentials(null, "sam","sam");
-        Customers newCustomer = new Customers(null,"Sam","San","gmail","3452525", LocalDate.now(), credentials);
+        Credentials credentials = new Credentials(null, "c","c");
+        Customers newCustomer = new Customers(null,"c","c","gmail","3425252", LocalDate.now(), credentials);
         addCustomerAndCredential.customerService.add(newCustomer);
         System.out.println("Nuevo customer añadido: " + newCustomer);
     }

@@ -1,10 +1,10 @@
-package pruebas.servicios;
+package pruebasHibernateMongo.servicios;
 
 import domain.model.ErrorC;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
-import pruebas.daos.Relacion11;
-import pruebas.modelo.Libro;
+import pruebasHibernateMongo.daos.Relacion11;
+import pruebasHibernateMongo.modelo.Libro;
 import java.util.List;
 
 public class LibroServiceImpl {

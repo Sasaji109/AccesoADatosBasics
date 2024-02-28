@@ -13,9 +13,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.bson.Document;
-import pruebas.modelo.Departamento;
-import pruebas.modelo.Empleado;
-import pruebas.modelo.MongoDepartamento;
+import pruebasHibernateMongo.modelo.Departamento;
+import pruebasHibernateMongo.modelo.Empleado;
+import pruebasHibernateMongo.modelo.MongoDepartamento;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class TransferMongoToHibernateDAOPruebasImplPruebas implements TransferMo
         Either<ErrorC, Integer> either;
 
         try {
-            List<MongoDepartamento> mongoDepartamentos = getAllDepartamentosMongo().get(); // Assuming getAllDepartamentosMongo returns Either.right
+            List<MongoDepartamento> mongoDepartamentos = getAllDepartamentosMongo().get();
 
             List<Departamento> departamentos = mongoDepartamentos.stream()
                     .map(this::mapToDepartamento)
@@ -61,7 +61,7 @@ public class TransferMongoToHibernateDAOPruebasImplPruebas implements TransferMo
                     Empleado empleado = new Empleado();
                     empleado.setId(0);
                     empleado.setNombre(mongoEmpleado.getNombre());
-                    empleado.setId(departamento.getId());
+                    empleado.setDepartamento_id(0);
                     return empleado;
                 })
                 .collect(Collectors.toList());
@@ -80,10 +80,11 @@ public class TransferMongoToHibernateDAOPruebasImplPruebas implements TransferMo
             for (Departamento departamento : departamentos) {
                 Departamento departamento1 = new Departamento(departamento.getId(),departamento.getNombre());
                 em.persist(departamento1);
+
                 for (Empleado empleado : departamento.getEmpleados()) {
-                    Integer id = departamento.getId();
-                    Empleado empleado1 = new Empleado(empleado.getId(), empleado.getNombre(), id);
-                    em.persist(empleado1);
+                    Integer id = departamento1.getId();
+                    empleado.setDepartamento_id(id);
+                    em.merge(empleado);
                 }
             }
 

@@ -21,8 +21,8 @@ public class UpdateCustomer {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         UpdateCustomer updateCustomer = container.select(UpdateCustomer.class).get();
 
-        Credentials credentials = new Credentials(48, "sam","sam");
-        Customers customer = new Customers(48,"Sam","Sanchez","gmail","3452525", LocalDate.now(), credentials);
+        Credentials credentials = new Credentials(52, "ccc","c");
+        Customers customer = new Customers(52,"ccc","c","gmail","3425252", LocalDate.now(), credentials);
         int rigth = updateCustomer.customerService.update(customer).get();
         System.out.println(rigth);
     }

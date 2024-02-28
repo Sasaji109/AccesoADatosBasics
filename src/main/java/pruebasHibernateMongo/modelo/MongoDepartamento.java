@@ -1,4 +1,4 @@
-package pruebas.modelo;
+package pruebasHibernateMongo.modelo;
 
 import lombok.*;
 import org.bson.types.ObjectId;

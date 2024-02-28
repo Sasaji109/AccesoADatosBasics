@@ -1,9 +1,9 @@
-package pruebas.mains;
+package pruebasHibernateMongo.mains;
 
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
-import pruebas.servicios.*;
+import pruebasHibernateMongo.servicios.*;
 
 public class MainRelacion11 {
 

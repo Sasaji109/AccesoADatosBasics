@@ -1,4 +1,4 @@
-package pruebas.daos;
+package pruebasHibernateMongo.daos;
 
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
@@ -6,16 +6,14 @@ import com.mongodb.client.MongoDatabase;
 import common.Constants;
 import common.configuration.JPAUtil;
 import common.configuration.MongoDBConfig;
-import dao.mongo.CredentialsDAOM;
 import domain.model.ErrorC;
-import domain.model.mongo.CredentialsMongo;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import org.bson.Document;
-import pruebas.modelo.Departamento;
-import pruebas.modelo.Empleado;
-import pruebas.modelo.MongoDepartamento;
+import pruebasHibernateMongo.modelo.Departamento;
+import pruebasHibernateMongo.modelo.Empleado;
+import pruebasHibernateMongo.modelo.MongoDepartamento;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

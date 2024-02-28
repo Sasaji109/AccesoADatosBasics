@@ -21,8 +21,8 @@ public class DeleteCustomerNoOrders {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         DeleteCustomerNoOrders deleteCustomerNoOrders = container.select(DeleteCustomerNoOrders.class).get();
 
-        Credentials credentials = new Credentials(48, "sam","sam");
-        Customers customer = new Customers(48,"Sam","San","gmail","3452525", LocalDate.now(), credentials);
+        Credentials credentials = new Credentials(51, "c","c");
+        Customers customer = new Customers(51,"c","c","gmail","3425252", LocalDate.now(), credentials);
         int rigth = deleteCustomerNoOrders.customerService.delete(customer, false).get();
         System.out.println(rigth);
     }

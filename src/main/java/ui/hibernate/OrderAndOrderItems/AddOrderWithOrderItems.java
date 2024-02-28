@@ -29,7 +29,7 @@ public class AddOrderWithOrderItems {
         OrderItem orderItem1 = new OrderItem(null,null,menuItem,10);
         orderItems.add(orderItem1);
 
-        Order newOrder = new Order(null, LocalDateTime.now(), 50,1, orderItems);
+        Order newOrder = new Order(null, LocalDateTime.now(), 10,1, orderItems);
         int addedOrder = addOrderWithOrderItems.orderService.add(newOrder).getOrElse(2);
         System.out.println(addedOrder);
     }

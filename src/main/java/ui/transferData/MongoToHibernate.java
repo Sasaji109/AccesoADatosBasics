@@ -1,6 +1,8 @@
 package ui.transferData;
 
+import domain.model.ErrorC;
 import domain.services.transferData.TransferServices;
+import io.vavr.control.Either;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
@@ -18,9 +20,17 @@ public class MongoToHibernate {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         MongoToHibernate mongoToHibernate = container.select(MongoToHibernate.class).get();
 
-        int rigth = mongoToHibernate.transferServices.transferMongoToHibernate().getOrElse(2);
-        System.out.println(rigth);
+        Either<ErrorC, Integer> result = mongoToHibernate.transferServices.transferMongoToHibernate();
+
+        if (result.isRight()) {
+            int rightValue = result.getOrElse(10);
+            System.out.println("Operation successful, value: " + rightValue);
+        } else {
+            ErrorC error = result.getLeft();
+            System.out.println("Operation failed with error: " + error.toString());
+        }
     }
+
 }
 
 

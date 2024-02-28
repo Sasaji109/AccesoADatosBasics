@@ -23,9 +23,9 @@ public class AddCustomerAndCredentialM {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         AddCustomerAndCredentialM addCustomerAndCredentialM = container.select(AddCustomerAndCredentialM.class).get();
 
-        CredentialsMongo newCredentials = new CredentialsMongo(null, "gio", "gio");
+        CredentialsMongo newCredentials = new CredentialsMongo(null, "c", "c");
         List<OrderMongo> orders = Collections.emptyList();
-        CustomersMongo newCustomer = new CustomersMongo(null,"Gio","Gio","gmail","34525352525","2002-03-03", orders, newCredentials);
+        CustomersMongo newCustomer = new CustomersMongo(null,"c","c","gmail","342352","2002-03-03", orders, newCredentials);
         CustomersMongo addedCustomer = addCustomerAndCredentialM.customerServiceM.add(newCustomer).get();
         System.out.println("Nuevo customer añadido: " + addedCustomer);
     }

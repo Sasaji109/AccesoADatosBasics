@@ -1,19 +1,19 @@
-package pruebas.modelo;
+package pruebasHibernateMongo.modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import java.util.List;
 
 @NoArgsConstructor
     @Getter
     @Setter
     @ToString
     @Entity
-    @Table(name = "departamentos", schema = "example_exam_2eva")
-    public class Departamento {
+    @Table(name = "empleados", schema = "example_exam_2eva")
+    public class Empleado {
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
@@ -22,11 +22,12 @@ import java.util.List;
         @Column(name = "nombre")
         private String nombre;
 
-        @OneToMany(mappedBy = "departamento_id", cascade = CascadeType.PERSIST, orphanRemoval = true)
-        private List<Empleado> empleados;
+        @Column(name = "departamento_id")
+        private Integer departamento_id;
 
-    public Departamento(Integer id, String nombre) {
+    public Empleado(Integer id, String nombre, Integer departamento_id) {
         this.id = id;
         this.nombre = nombre;
+        this.departamento_id = departamento_id;
     }
 }

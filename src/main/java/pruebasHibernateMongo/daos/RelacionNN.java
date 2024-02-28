@@ -1,4 +1,4 @@
-package pruebas.daos;
+package pruebasHibernateMongo.daos;
 
 import common.Constants;
 import common.configuration.JPAUtil;
@@ -6,8 +6,8 @@ import domain.model.ErrorC;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
-import pruebas.modelo.Curso;
-import pruebas.modelo.EstudianteCurso;
+import pruebasHibernateMongo.modelo.Curso;
+import pruebasHibernateMongo.modelo.EstudianteCurso;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -32,10 +32,10 @@ public class UpdateOrderWithOrderItems {
 
         MenuItem menuItem = new MenuItem(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem1 = new OrderItem(33,44,menuItem,11);
+        OrderItem orderItem1 = new OrderItem(35,46, menuItem,11);
         orderItems.add(orderItem1);
 
-        Order order = new Order(44, LocalDateTime.now(), 50,3, orderItems);
+        Order order = new Order(46, LocalDateTime.now(), 10,4, orderItems);
         int updatedOrder = updateOrderWithOrderItems.orderService.update(order).getOrElse(2);
         System.out.println(updatedOrder);
     }

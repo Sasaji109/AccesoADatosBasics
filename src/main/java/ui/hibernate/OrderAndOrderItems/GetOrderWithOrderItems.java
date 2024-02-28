@@ -5,19 +5,19 @@ import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
 
-public class GetAllOrdersAndOrderItems {
+public class GetOrderWithOrderItems {
 
     private final OrderService orderService;
 
     @Inject
-    public GetAllOrdersAndOrderItems(OrderService orderService) {
+    public GetOrderWithOrderItems(OrderService orderService) {
         this.orderService = orderService;
     }
 
     public static void main(String[] args) {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
-        GetAllOrdersAndOrderItems getAllOrdersAndOrderItems = container.select(GetAllOrdersAndOrderItems.class).get();
-        System.out.println(getAllOrdersAndOrderItems.orderService.getAll());
+        GetOrderWithOrderItems getOrderWithOrderItems = container.select(GetOrderWithOrderItems.class).get();
+        System.out.println(getOrderWithOrderItems.orderService.get(1));
     }
 }
 

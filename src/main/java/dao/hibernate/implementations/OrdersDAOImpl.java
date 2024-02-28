@@ -110,6 +110,20 @@ public class OrdersDAOImpl implements OrdersDAO {
         try {
             tx.begin();
             em.merge(order);
+
+            List<OrderItem> orderItemList = order.getOrderItemList();
+            if (orderItemList != null && !orderItemList.isEmpty()) {
+                for (OrderItem orderItem : orderItemList) {
+                    OrderItem orderItem1 = new OrderItem(
+                            orderItem.getId(),
+                            orderItem.getOrderId(),
+                            orderItem.getMenuItem(),
+                            orderItem.getQuantity()
+                    );
+                    em.merge(orderItem1);
+                }
+            }
+
             tx.commit();
 
             int rowsAffected = 1;

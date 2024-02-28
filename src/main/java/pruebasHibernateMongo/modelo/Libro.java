@@ -1,4 +1,4 @@
-package pruebas.modelo;
+package pruebasHibernateMongo.modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;

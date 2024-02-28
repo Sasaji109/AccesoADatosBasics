@@ -11,12 +11,12 @@
         <class>domain.model.hibernate.MenuItem</class>
         <class>domain.model.hibernate.RestaurantTable</class>
 
-        <class>pruebas.modelo.Curso</class>
-        <class>pruebas.modelo.Empleado</class>
-        <class>pruebas.modelo.Departamento</class>
-        <class>pruebas.modelo.Libro</class>
-        <class>pruebas.modelo.Estudiante</class>
-        <class>pruebas.modelo.EstudianteCurso</class>
+        <class>pruebasHibernateMongo.modelo.Curso</class>
+        <class>pruebasHibernateMongo.modelo.Empleado</class>
+        <class>pruebasHibernateMongo.modelo.Departamento</class>
+        <class>pruebasHibernateMongo.modelo.Libro</class>
+        <class>pruebasHibernateMongo.modelo.Estudiante</class>
+        <class>pruebasHibernateMongo.modelo.EstudianteCurso</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

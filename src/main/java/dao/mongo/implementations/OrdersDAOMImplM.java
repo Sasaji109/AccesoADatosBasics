@@ -64,17 +64,31 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
 
+            // Crear un documento de consulta para buscar un cliente por su "_id"
             Document query = new Document("_id", customerId);
+
+            // Buscar el primer documento que coincida con la consulta en la colección de clientes
             Document customerDoc = customersCollection.find(query).first();
 
+            // Verificar si se encontró un cliente con el ID proporcionado
             if (customerDoc != null) {
+
+                // Obtener la lista de documentos de orders dentro del documento del customer
                 List<Document> ordersDoc = (List<Document>) customerDoc.get("orders");
+
+                // Convertir el objeto 'order' a formato JSON utilizando la biblioteca Gson
                 String orderJson = gson.toJson(order);
 
+                // Parsear el JSON del order a un nuevo documento de MongoDB
                 Document newOrderDoc = Document.parse(orderJson);
+
+                // Agregar la fecha del pedido al nuevo documento
                 newOrderDoc.put("order_date", order.getOrder_date());
+
+                // Agregar el nuevo documento de pedido a la lista de documentos de pedidos
                 ordersDoc.add(newOrderDoc);
 
+                // Actualizar el documento del cliente en la colección con la nueva lista de pedidos
                 customersCollection.updateOne(query, new Document("$set", new Document("orders", ordersDoc)));
 
                 either = Either.right(1);
@@ -94,8 +108,11 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
 
+            // Realizar una actualización en la colección "customers"
             UpdateResult updateResult = customersCollection.updateOne(
+                    // Especificar el criterio de búsqueda para identificar al cliente por su "_id" y la fecha del pedido
                     and(eq("_id", customerId), eq("orders.order_date", order.getOrder_date())),
+                    // Definir la actualización utilizando el operador $set para modificar el campo "orders" del cliente
                     set("orders.$", Document.parse(new Gson().toJson(order)))
             );
 
@@ -119,7 +136,14 @@ public class OrdersDAOMImplM implements OrdersDAOM {
         try {
             MongoCollection<Document> customersCollection = mongoDatabase.getCollection("customers");
 
-            UpdateResult updateResult = customersCollection.updateOne(eq("_id", customerId), pull("orders", eq("order_date", order.getOrder_date())));
+            // Realizar una actualización en la colección "customers"
+            UpdateResult updateResult = customersCollection.updateOne(
+                    // Especificar el criterio de búsqueda para identificar al cliente por su "_id"
+                    eq("_id", customerId),
+                    // Utilizar el operador $pull para eliminar un elemento de la lista "orders" que coincida con la fecha del pedido
+                    pull("orders", eq("order_date", order.getOrder_date()))
+            );
+
 
             if (updateResult.getModifiedCount() > 0) {
                 either = Either.right(1);

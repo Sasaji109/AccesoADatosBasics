@@ -1,10 +1,10 @@
-package pruebas.servicios;
+package pruebasHibernateMongo.servicios;
 
 import domain.model.ErrorC;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
-import pruebas.daos.RelacionNN;
-import pruebas.modelo.Curso;
+import pruebasHibernateMongo.daos.RelacionNN;
+import pruebasHibernateMongo.modelo.Curso;
 import java.util.List;
 
 public class CursoServiceImpl {
