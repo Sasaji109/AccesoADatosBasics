@@ -1,4 +1,4 @@
-package domain.model.hibernate;
+package domain.xml;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "order_items", schema = "example_exam_2eva")
-public class OrderItem {
+public class OrderItemXML {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -24,15 +24,15 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_item_id")
-    private MenuItem menuItem;
+    private MenuItemXML menuItemH;
 
     @Column(name = "quantity")
     private Integer quantity;
 
-    public OrderItem(Integer id, Integer orderId, MenuItem menuItem, Integer quantity) {
+    public OrderItemXML(Integer id, Integer orderId, MenuItemXML menuItemH, Integer quantity) {
         this.id = id;
         this.orderId = orderId;
-        this.menuItem = menuItem;
+        this.menuItemH = menuItemH;
         this.quantity = quantity;
     }
 }

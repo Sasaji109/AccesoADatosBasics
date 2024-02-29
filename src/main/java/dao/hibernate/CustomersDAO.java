@@ -1,14 +1,14 @@
 package dao.hibernate;
 
 import domain.model.ErrorC;
-import domain.model.hibernate.Customers;
+import domain.model.hibernate.CustomersH;
 import io.vavr.control.Either;
 import java.util.List;
 
 public interface CustomersDAO {
-    Either<ErrorC, List<Customers>> getAll();
-    Either<ErrorC, Customers> get(int id);
-    Either<ErrorC, Integer> add(Customers customers);
-    Either<ErrorC, Integer> update(Customers customers);
-    Either<ErrorC, Integer> delete(Customers customers, boolean orders);
+    Either<ErrorC, List<CustomersH>> getAll();
+    Either<ErrorC, CustomersH> get(int id);
+    Either<ErrorC, Integer> add(CustomersH customersH);
+    Either<ErrorC, Integer> update(CustomersH customersH);
+    Either<ErrorC, Integer> delete(CustomersH customersH, boolean orders);
 }

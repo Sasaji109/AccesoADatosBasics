@@ -4,12 +4,12 @@
              version="2.0">
 
     <persistence-unit name="unit3.hibernate">
-        <class>domain.model.hibernate.Customers</class>
-        <class>domain.model.hibernate.Credentials</class>
-        <class>domain.model.hibernate.Order</class>
-        <class>domain.model.hibernate.OrderItem</class>
-        <class>domain.model.hibernate.MenuItem</class>
-        <class>domain.model.hibernate.RestaurantTable</class>
+        <class>domain.model.hibernate.CustomersH</class>
+        <class>domain.model.hibernate.CredentialsH</class>
+        <class>domain.model.hibernate.OrderH</class>
+        <class>domain.model.hibernate.OrderItemH</class>
+        <class>domain.model.hibernate.MenuItemH</class>
+        <class>domain.model.hibernate.RestaurantTableH</class>
 
         <class>pruebasHibernateMongo.modelo.Curso</class>
         <class>pruebasHibernateMongo.modelo.Empleado</class>

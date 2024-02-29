@@ -1,4 +1,4 @@
-package domain.model.hibernate;
+package domain.xml;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -17,5 +17,5 @@ import java.util.List;
 public class OrdersXML {
 
     @XmlElement(name = "order")
-    private List<Order> ordersList;
+    private List<OrderXML> ordersList;
 }

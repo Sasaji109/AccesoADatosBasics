@@ -1,11 +1,11 @@
 package dao.hibernate.implementations;
 
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import dao.hibernate.OrdersDAO;
 import domain.model.ErrorC;
-import domain.model.hibernate.Order;
-import domain.model.hibernate.OrderItem;
+import domain.model.hibernate.OrderH;
+import domain.model.hibernate.OrderItemH;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -26,14 +26,14 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public Either<ErrorC, List<Order>> getAll() {
-        Either<ErrorC, List<Order>> either;
-        List<Order> orders;
+    public Either<ErrorC, List<OrderH>> getAll() {
+        Either<ErrorC, List<OrderH>> either;
+        List<OrderH> orderHS;
         em = jpaUtil.getEntityManager();
 
         try {
-            orders = em.createQuery("FROM Order", Order.class).getResultList();
-            either = Either.right(orders);
+            orderHS = em.createQuery("FROM OrderH", OrderH.class).getResultList();
+            either = Either.right(orderHS);
         }
         catch(Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));
@@ -42,15 +42,15 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public Either<ErrorC, Order> get(int orderId) {
-        Either<ErrorC, Order> either;
+    public Either<ErrorC, OrderH> get(int orderId) {
+        Either<ErrorC, OrderH> either;
 
-        Order order;
+        OrderH orderH;
         em = jpaUtil.getEntityManager();
 
         try {
-            order = em.find(Order.class, orderId);
-            either = Either.right(order);
+            orderH = em.find(OrderH.class, orderId);
+            either = Either.right(orderH);
         } catch (Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));
         }
@@ -58,10 +58,10 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> add(Order order) {
+    public Either<ErrorC, Integer> add(OrderH orderH) {
         Either<ErrorC, Integer> either;
 
-        order.setOrderDate(LocalDateTime.now());
+        orderH.setOrderDate(LocalDateTime.now());
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = null;
 
@@ -69,20 +69,20 @@ public class OrdersDAOImpl implements OrdersDAO {
             tx = em.getTransaction();
             tx.begin();
 
-            Order order1 = new Order(order.getOrderId(), order.getOrderDate(), order.getCustomerId(), order.getTableId());
-            em.persist(order1);
+            OrderH orderH1 = new OrderH(orderH.getOrderId(), orderH.getOrderDate(), orderH.getCustomerId(), orderH.getTableId());
+            em.persist(orderH1);
 
-            Integer orderId = order1.getOrderId();
-            List<OrderItem> orderItemList = order.getOrderItemList();
-            if (orderItemList != null && !orderItemList.isEmpty()) {
-                for (OrderItem orderItem : orderItemList) {
-                    OrderItem orderItem1 = new OrderItem(
-                            orderItem.getId(),
+            Integer orderId = orderH1.getOrderId();
+            List<OrderItemH> orderItemHList = orderH.getOrderItemHList();
+            if (orderItemHList != null && !orderItemHList.isEmpty()) {
+                for (OrderItemH orderItemH : orderItemHList) {
+                    OrderItemH orderItemH1 = new OrderItemH(
+                            orderItemH.getId(),
                             orderId,
-                            orderItem.getMenuItem(),
-                            orderItem.getQuantity()
+                            orderItemH.getMenuItemH(),
+                            orderItemH.getQuantity()
                     );
-                    em.persist(orderItem1);
+                    em.persist(orderItemH1);
                 }
             }
 
@@ -102,25 +102,25 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> update(Order order) {
+    public Either<ErrorC, Integer> update(OrderH orderH) {
         Either<ErrorC, Integer> either;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
         try {
             tx.begin();
-            em.merge(order);
+            em.merge(orderH);
 
-            List<OrderItem> orderItemList = order.getOrderItemList();
-            if (orderItemList != null && !orderItemList.isEmpty()) {
-                for (OrderItem orderItem : orderItemList) {
-                    OrderItem orderItem1 = new OrderItem(
-                            orderItem.getId(),
-                            orderItem.getOrderId(),
-                            orderItem.getMenuItem(),
-                            orderItem.getQuantity()
+            List<OrderItemH> orderItemHList = orderH.getOrderItemHList();
+            if (orderItemHList != null && !orderItemHList.isEmpty()) {
+                for (OrderItemH orderItemH : orderItemHList) {
+                    OrderItemH orderItemH1 = new OrderItemH(
+                            orderItemH.getId(),
+                            orderItemH.getOrderId(),
+                            orderItemH.getMenuItemH(),
+                            orderItemH.getQuantity()
                     );
-                    em.merge(orderItem1);
+                    em.merge(orderItemH1);
                 }
             }
 
@@ -139,14 +139,14 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> delete(Order order) {
+    public Either<ErrorC, Integer> delete(OrderH orderH) {
         Either<ErrorC, Integer> either;
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
         try {
-            em.remove(em.merge(order));
+            em.remove(em.merge(orderH));
             tx.commit();
 
             int rowsAffected = 1;

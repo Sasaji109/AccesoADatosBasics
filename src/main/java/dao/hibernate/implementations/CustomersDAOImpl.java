@@ -1,13 +1,14 @@
 package dao.hibernate.implementations;
 
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import dao.hibernate.CustomersDAO;
 import domain.model.ErrorC;
-import domain.model.hibernate.Credentials;
-import domain.model.hibernate.Customers;
-import domain.model.hibernate.Order;
-import domain.model.hibernate.OrdersXML;
+import domain.model.hibernate.CredentialsH;
+import domain.model.hibernate.CustomersH;
+import domain.model.hibernate.OrderH;
+import domain.xml.OrderXML;
+import domain.xml.OrdersXML;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -32,14 +33,14 @@ public class CustomersDAOImpl implements CustomersDAO {
     }
 
     @Override
-    public Either<ErrorC, List<Customers>> getAll() {
-        Either<ErrorC, List<Customers>> either;
+    public Either<ErrorC, List<CustomersH>> getAll() {
+        Either<ErrorC, List<CustomersH>> either;
 
-        List<Customers> customers;
+        List<CustomersH> customers;
         em = jpaUtil.getEntityManager();
 
         try {
-            customers = em.createNamedQuery( "HQL_GET_ALL_CUSTOMERS", Customers.class).getResultList();
+            customers = em.createNamedQuery( "HQL_GET_ALL_CUSTOMERS", CustomersH.class).getResultList();
             either = Either.right(customers);
         }
         catch(Exception e) {
@@ -51,12 +52,12 @@ public class CustomersDAOImpl implements CustomersDAO {
     }
 
     @Override
-    public Either<ErrorC, Customers> get(int id) {
-        Either<ErrorC, Customers> either;
+    public Either<ErrorC, CustomersH> get(int id) {
+        Either<ErrorC, CustomersH> either;
         em = jpaUtil.getEntityManager();
 
         try {
-            Customers customer = em.find(Customers.class,id);
+            CustomersH customer = em.find(CustomersH.class,id);
             either = Either.right(customer);
         } catch (Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));
@@ -67,7 +68,7 @@ public class CustomersDAOImpl implements CustomersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> add(Customers customer) {
+    public Either<ErrorC, Integer> add(CustomersH customer) {
         Either<ErrorC, Integer> either;
         em = jpaUtil.getEntityManager();
         EntityTransaction entityTransaction = em.getTransaction();
@@ -75,10 +76,10 @@ public class CustomersDAOImpl implements CustomersDAO {
         try {
             entityTransaction.begin();
 
-            Credentials credentials = customer.getCredentials();
-            em.persist(credentials);
+            CredentialsH credentialsH = customer.getCredentialsH();
+            em.persist(credentialsH);
 
-            Customers customer1 = new Customers(credentials.getCustomerId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
+            CustomersH customer1 = new CustomersH(credentialsH.getCustomerId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
             em.persist(customer1);
             entityTransaction.commit();
 
@@ -96,16 +97,16 @@ public class CustomersDAOImpl implements CustomersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> update(Customers customer) {
+    public Either<ErrorC, Integer> update(CustomersH customer) {
         Either<ErrorC, Integer> either;
-        Credentials credential = customer.getCredentials();
+        CredentialsH credential = customer.getCredentialsH();
 
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
         try {
             tx.begin();
-            Customers customer1 = new Customers(customer.getCustomersId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
+            CustomersH customer1 = new CustomersH(customer.getCustomersId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
             em.merge(customer1);
             em.merge(credential);
             tx.commit();
@@ -123,9 +124,9 @@ public class CustomersDAOImpl implements CustomersDAO {
     }
 
     @Override
-    public Either<ErrorC, Integer> delete(Customers customer, boolean orders) {
+    public Either<ErrorC, Integer> delete(CustomersH customer, boolean orders) {
         Either<ErrorC, Integer> either;
-        Credentials credential = customer.getCredentials();
+        CredentialsH credential = customer.getCredentialsH();
 
         em = jpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -133,17 +134,17 @@ public class CustomersDAOImpl implements CustomersDAO {
 
         try {
             if (orders) {
-                List<Order> ordersList = em.createQuery("SELECT o FROM Order o WHERE o.customerId = :customerId", Order.class)
+                List<OrderXML> ordersList = em.createQuery("SELECT o FROM OrderXML o WHERE o.customerId = :customerId", OrderXML.class)
                         .setParameter("customerId", customer.getCustomersId()).getResultList();
 
                 backupOrdersToXml(ordersList, customer.getFirstName());
 
-                for (Order order : ordersList) {
+                for (OrderXML order : ordersList) {
                     em.remove(em.merge(order));
                 }
             }
 
-            Customers customer1 = new Customers(customer.getCustomersId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
+            CustomersH customer1 = new CustomersH(customer.getCustomersId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getDateBirth());
             em.remove(em.merge(customer1));
             em.remove(em.merge(credential));
             tx.commit();
@@ -160,7 +161,7 @@ public class CustomersDAOImpl implements CustomersDAO {
         return either;
     }
 
-    private boolean backupOrdersToXml(List<Order> ordersList, String customerName) throws Exception {
+    private boolean backupOrdersToXml(List<OrderXML> ordersList, String customerName) throws Exception {
         String fileName = customerName + "_orders_backup.xml";
         File backupFile = new File(fileName);
 

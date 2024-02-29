@@ -1,7 +1,7 @@
 package ui.hibernate.CustomerAndCredential;
 
-import domain.model.hibernate.Credentials;
-import domain.model.hibernate.Customers;
+import domain.model.hibernate.CredentialsH;
+import domain.model.hibernate.CustomersH;
 import domain.services.hibernate.CustomerService;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
@@ -21,8 +21,8 @@ public class UpdateCustomer {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         UpdateCustomer updateCustomer = container.select(UpdateCustomer.class).get();
 
-        Credentials credentials = new Credentials(52, "ccc","c");
-        Customers customer = new Customers(52,"ccc","c","gmail","3425252", LocalDate.now(), credentials);
+        CredentialsH credentialsH = new CredentialsH(52, "ccc","c");
+        CustomersH customer = new CustomersH(52,"ccc","c","gmail","3425252", LocalDate.now(), credentialsH);
         int rigth = updateCustomer.customerService.update(customer).get();
         System.out.println(rigth);
     }

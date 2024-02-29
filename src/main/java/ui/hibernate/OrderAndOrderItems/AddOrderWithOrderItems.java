@@ -1,8 +1,8 @@
 package ui.hibernate.OrderAndOrderItems;
 
-import domain.model.hibernate.MenuItem;
-import domain.model.hibernate.Order;
-import domain.model.hibernate.OrderItem;
+import domain.model.hibernate.MenuItemH;
+import domain.model.hibernate.OrderH;
+import domain.model.hibernate.OrderItemH;
 import domain.services.hibernate.OrderService;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
@@ -24,13 +24,13 @@ public class AddOrderWithOrderItems {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         AddOrderWithOrderItems addOrderWithOrderItems = container.select(AddOrderWithOrderItems.class).get();
 
-        MenuItem menuItem = new MenuItem(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
-        List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem1 = new OrderItem(null,null,menuItem,10);
-        orderItems.add(orderItem1);
+        MenuItemH menuItemH = new MenuItemH(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
+        List<OrderItemH> orderItemHS = new ArrayList<>();
+        OrderItemH orderItemH1 = new OrderItemH(null,null, menuItemH,10);
+        orderItemHS.add(orderItemH1);
 
-        Order newOrder = new Order(null, LocalDateTime.now(), 10,1, orderItems);
-        int addedOrder = addOrderWithOrderItems.orderService.add(newOrder).getOrElse(2);
+        OrderH newOrderH = new OrderH(null, LocalDateTime.now(), 10,1, orderItemHS);
+        int addedOrder = addOrderWithOrderItems.orderService.add(newOrderH).getOrElse(2);
         System.out.println(addedOrder);
     }
 }

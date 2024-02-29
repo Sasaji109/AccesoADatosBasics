@@ -1,6 +1,6 @@
 package pruebasHibernateMongo.daos;
 
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import domain.model.ErrorC;
 import io.vavr.control.Either;

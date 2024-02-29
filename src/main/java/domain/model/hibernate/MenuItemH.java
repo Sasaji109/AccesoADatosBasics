@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "menu_items", schema = "example_exam_2eva")
-public class MenuItem {
+public class MenuItemH {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -28,7 +28,7 @@ public class MenuItem {
     @Column(name = "price")
     private Double price;
 
-    public MenuItem(Integer id, String name, String description, Double price) {
+    public MenuItemH(Integer id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
         this.description = description;

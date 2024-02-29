@@ -1,20 +1,15 @@
 package ui.hibernate.OrderAndOrderItems;
 
-import domain.model.hibernate.MenuItem;
-import domain.model.hibernate.Order;
-import domain.model.hibernate.OrderItem;
-import domain.model.mongo.OrderItemMongo;
-import domain.model.mongo.OrderMongo;
+import domain.model.hibernate.MenuItemH;
+import domain.model.hibernate.OrderH;
+import domain.model.hibernate.OrderItemH;
 import domain.services.hibernate.OrderService;
-import domain.services.mongo.OrderServiceM;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.inject.Inject;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UpdateOrderWithOrderItems {
@@ -30,13 +25,13 @@ public class UpdateOrderWithOrderItems {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         UpdateOrderWithOrderItems updateOrderWithOrderItems = container.select(UpdateOrderWithOrderItems.class).get();
 
-        MenuItem menuItem = new MenuItem(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
-        List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem orderItem1 = new OrderItem(35,46, menuItem,11);
-        orderItems.add(orderItem1);
+        MenuItemH menuItemH = new MenuItemH(1,"Spaghetti Carbonara","Creamy pasta with bacon and Parmesan cheese",12.99);
+        List<OrderItemH> orderItemHS = new ArrayList<>();
+        OrderItemH orderItemH1 = new OrderItemH(35,46, menuItemH,11);
+        orderItemHS.add(orderItemH1);
 
-        Order order = new Order(46, LocalDateTime.now(), 10,4, orderItems);
-        int updatedOrder = updateOrderWithOrderItems.orderService.update(order).getOrElse(2);
+        OrderH orderH = new OrderH(46, LocalDateTime.now(), 10,4, orderItemHS);
+        int updatedOrder = updateOrderWithOrderItems.orderService.update(orderH).getOrElse(2);
         System.out.println(updatedOrder);
     }
 }

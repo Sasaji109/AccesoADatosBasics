@@ -3,7 +3,7 @@ package dao.transfers.implementations;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import common.configuration.MongoDBConfig;
 import dao.transfers.TransferHibernateToMongoDAO;
@@ -36,15 +36,15 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
     public Either<ErrorC, Integer> transferHibernateToMongo() {
         Either<ErrorC, Integer> either;
         try {
-            List<MenuItem> menuItems = getAllMenuItems().getOrElse(Collections.emptyList());
-            List<MenuItemMongo> menuItemMongoList = mapMenuItems(menuItems);
+            List<MenuItemH> menuItemHS = getAllMenuItems().getOrElse(Collections.emptyList());
+            List<MenuItemMongo> menuItemMongoList = mapMenuItems(menuItemHS);
             saveMenuItemsToMongo(menuItemMongoList);
 
-            List<Customers> customersList = getAllCustomersCredentials().getOrElse(Collections.emptyList());
-            List<CredentialsMongo> credentialsMongoList = mapCredentials(customersList);
+            List<CustomersH> customersHList = getAllCustomersCredentials().getOrElse(Collections.emptyList());
+            List<CredentialsMongo> credentialsMongoList = mapCredentials(customersHList);
             saveCredentialsToMongo(credentialsMongoList);
 
-            List<CustomersMongo> customersMongoList = mapCustomers(customersList);
+            List<CustomersMongo> customersMongoList = mapCustomers(customersHList);
             saveCustomersToMongo(customersMongoList);
 
             either = Either.right(customersMongoList.size());
@@ -54,41 +54,41 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         return either;
     }
 
-    private List<MenuItemMongo> mapMenuItems(List<MenuItem> menuItems) {
+    private List<MenuItemMongo> mapMenuItems(List<MenuItemH> menuItemHS) {
         List<MenuItemMongo> menuItemMongoList = new ArrayList<>();
 
-        for (MenuItem menuItem : menuItems) {
+        for (MenuItemH menuItemH : menuItemHS) {
             MenuItemMongo menuItemMongo = new MenuItemMongo();
-            menuItemMongo.set_id(menuItem.getId());
-            menuItemMongo.setName(menuItem.getName());
-            menuItemMongo.setDescription(menuItem.getDescription());
-            menuItemMongo.setPrice(menuItem.getPrice());
+            menuItemMongo.set_id(menuItemH.getId());
+            menuItemMongo.setName(menuItemH.getName());
+            menuItemMongo.setDescription(menuItemH.getDescription());
+            menuItemMongo.setPrice(menuItemH.getPrice());
             menuItemMongoList.add(menuItemMongo);
         }
         return menuItemMongoList;
     }
 
-    private List<CredentialsMongo> mapCredentials(List<Customers> customersList) {
+    private List<CredentialsMongo> mapCredentials(List<CustomersH> customersHList) {
         List<CredentialsMongo> credentialsMongoList = new ArrayList<>();
 
-        for (Customers customer : customersList) {
-            Credentials credentials = customer.getCredentials();
+        for (CustomersH customer : customersHList) {
+            CredentialsH credentialsH = customer.getCredentialsH();
 
-            if (credentials != null) {
+            if (credentialsH != null) {
                 CredentialsMongo credentialsMongo = new CredentialsMongo();
                 credentialsMongo.set_id(null);
-                credentialsMongo.setUser_name(credentials.getUsername());
-                credentialsMongo.setPassword(credentials.getPassword());
+                credentialsMongo.setUser_name(credentialsH.getUsername());
+                credentialsMongo.setPassword(credentialsH.getPassword());
                 credentialsMongoList.add(credentialsMongo);
             }
         }
         return credentialsMongoList;
     }
 
-    private List<CustomersMongo> mapCustomers(List<Customers> customersList) {
+    private List<CustomersMongo> mapCustomers(List<CustomersH> customersHList) {
         List<CustomersMongo> customersMongoList = new ArrayList<>();
 
-        for (Customers customer : customersList) {
+        for (CustomersH customer : customersHList) {
             CustomersMongo customersMongo = new CustomersMongo();
             customersMongo.set_id(null);
             customersMongo.setFirst_name(customer.getFirstName());
@@ -97,8 +97,8 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
             customersMongo.setPhone(customer.getPhone());
             customersMongo.setDate_of_birth(customer.getDateBirth().toString());
 
-            List<Order> orders = getAllOrdersOrderItems().getOrElse(Collections.emptyList());
-            List<OrderMongo> orderMongoList = mapOrders(orders, customer.getCustomersId());
+            List<OrderH> orderHS = getAllOrdersOrderItems().getOrElse(Collections.emptyList());
+            List<OrderMongo> orderMongoList = mapOrders(orderHS, customer.getCustomersId());
             customersMongo.setOrders(orderMongoList);
 
             customersMongoList.add(customersMongo);
@@ -107,15 +107,15 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         return customersMongoList;
     }
 
-    private List<OrderMongo> mapOrders(List<Order> allOrders, Integer customerId) {
+    private List<OrderMongo> mapOrders(List<OrderH> allOrderHS, Integer customerId) {
         List<OrderMongo> orderMongoList = new ArrayList<>();
 
-        for (Order order : allOrders) {
-            if (order.getCustomerId().equals(customerId)) {
+        for (OrderH orderH : allOrderHS) {
+            if (orderH.getCustomerId().equals(customerId)) {
                 OrderMongo orderMongo = new OrderMongo();
-                orderMongo.setOrder_date(order.getOrderDate().toString());
-                orderMongo.setTable_id(order.getTableId());
-                List<OrderItemMongo> orderItemMongoList = mapOrderItems(order.getOrderItemList());
+                orderMongo.setOrder_date(orderH.getOrderDate().toString());
+                orderMongo.setTable_id(orderH.getTableId());
+                List<OrderItemMongo> orderItemMongoList = mapOrderItems(orderH.getOrderItemHList());
                 orderMongo.setOrder_items(orderItemMongoList);
 
                 orderMongoList.add(orderMongo);
@@ -124,13 +124,13 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         return orderMongoList;
     }
 
-    private List<OrderItemMongo> mapOrderItems(List<OrderItem> orderItems) {
+    private List<OrderItemMongo> mapOrderItems(List<OrderItemH> orderItemHS) {
         List<OrderItemMongo> orderItemMongoList = new ArrayList<>();
 
-        for (OrderItem orderItem : orderItems) {
+        for (OrderItemH orderItemH : orderItemHS) {
             OrderItemMongo orderItemMongo = new OrderItemMongo();
-            orderItemMongo.setMenu_item_id(orderItem.getMenuItem().getId());
-            orderItemMongo.setQuantity(orderItem.getQuantity());
+            orderItemMongo.setMenu_item_id(orderItemH.getMenuItemH().getId());
+            orderItemMongo.setQuantity(orderItemH.getQuantity());
             orderItemMongoList.add(orderItemMongo);
         }
         return orderItemMongoList;
@@ -163,14 +163,14 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         }
     }
 
-    private Either<ErrorC, List<Customers>> getAllCustomersCredentials() {
-        Either<ErrorC, List<Customers>> either;
+    private Either<ErrorC, List<CustomersH>> getAllCustomersCredentials() {
+        Either<ErrorC, List<CustomersH>> either;
 
-        List<Customers> customers;
+        List<CustomersH> customers;
         em = jpaUtil.getEntityManager();
 
         try {
-            customers = em.createNamedQuery( "HQL_GET_ALL_CUSTOMERS", Customers.class).getResultList();
+            customers = em.createNamedQuery( "HQL_GET_ALL_CUSTOMERS", CustomersH.class).getResultList();
             either = Either.right(customers);
         }
         catch(Exception e) {
@@ -179,15 +179,15 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         return either;
     }
 
-    private Either<ErrorC, List<Order>> getAllOrdersOrderItems() {
-        Either<ErrorC, List<Order>> either;
+    private Either<ErrorC, List<OrderH>> getAllOrdersOrderItems() {
+        Either<ErrorC, List<OrderH>> either;
 
-        List<Order> orders;
+        List<OrderH> orderHS;
         em = jpaUtil.getEntityManager();
 
         try {
-            orders = em.createQuery("FROM Order", Order.class).getResultList();
-            either = Either.right(orders);
+            orderHS = em.createQuery("FROM OrderH", OrderH.class).getResultList();
+            either = Either.right(orderHS);
         }
         catch(Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));
@@ -195,15 +195,15 @@ public class TransferHibernateToMongoDAOImpl implements TransferHibernateToMongo
         return either;
     }
 
-    private Either<ErrorC, List<MenuItem>> getAllMenuItems() {
-        Either<ErrorC, List<MenuItem>> either;
+    private Either<ErrorC, List<MenuItemH>> getAllMenuItems() {
+        Either<ErrorC, List<MenuItemH>> either;
 
-        List<MenuItem> menuItems;
+        List<MenuItemH> menuItemHS;
         em = jpaUtil.getEntityManager();
 
         try {
-            menuItems = em.createQuery("FROM MenuItem", MenuItem.class).getResultList();
-            either = Either.right(menuItems);
+            menuItemHS = em.createQuery("FROM MenuItemH", MenuItemH.class).getResultList();
+            either = Either.right(menuItemHS);
         }
         catch(Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));

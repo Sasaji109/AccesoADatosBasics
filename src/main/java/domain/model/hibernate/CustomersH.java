@@ -11,8 +11,8 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "customers", schema = "example_exam_2eva")
-@NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_CUSTOMERS", query = "from Customers") })
-public class Customers {
+@NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_CUSTOMERS", query = "from CustomersH") })
+public class CustomersH {
 
     @Id
     @Column(name = "id")
@@ -35,9 +35,9 @@ public class Customers {
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id", referencedColumnName = "customer_id")
-    private Credentials credentials;
+    private CredentialsH credentialsH;
 
-    public Customers(Integer customersId, String firstName, String lastName, String email, String phone, LocalDate dateBirth) {
+    public CustomersH(Integer customersId, String firstName, String lastName, String email, String phone, LocalDate dateBirth) {
         this.customersId = customersId;
         this.firstName = firstName;
         this.lastName = lastName;

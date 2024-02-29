@@ -1,7 +1,7 @@
 package ui.hibernate.CustomerAndCredential;
 
-import domain.model.hibernate.Credentials;
-import domain.model.hibernate.Customers;
+import domain.model.hibernate.CredentialsH;
+import domain.model.hibernate.CustomersH;
 import domain.services.hibernate.CustomerService;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
@@ -21,8 +21,8 @@ public class AddCustomerAndCredential {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         AddCustomerAndCredential addCustomerAndCredential = container.select(AddCustomerAndCredential.class).get();
 
-        Credentials credentials = new Credentials(null, "c","c");
-        Customers newCustomer = new Customers(null,"c","c","gmail","3425252", LocalDate.now(), credentials);
+        CredentialsH credentialsH = new CredentialsH(null, "c","c");
+        CustomersH newCustomer = new CustomersH(null,"c","c","gmail","3425252", LocalDate.now(), credentialsH);
         addCustomerAndCredential.customerService.add(newCustomer);
         System.out.println("Nuevo customer añadido: " + newCustomer);
     }

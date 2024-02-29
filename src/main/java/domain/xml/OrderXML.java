@@ -1,4 +1,4 @@
-package domain.model.hibernate;
+package domain.xml;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "orders", schema = "example_exam_2eva")
-public class Order {
+public class OrderXML {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,20 +31,20 @@ public class Order {
     private Integer tableId;
 
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<OrderItem> orderItemList;
+    private List<OrderItemXML> orderItemHList;
 
-    public Order(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId) {
+    public OrderXML(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.tableId = tableId;
     }
 
-    public Order(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId, List<OrderItem> orderItemList) {
+    public OrderXML(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId, List<OrderItemXML> orderItemHList) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.tableId = tableId;
-        this.orderItemList = orderItemList;
+        this.orderItemHList = orderItemHList;
     }
 }

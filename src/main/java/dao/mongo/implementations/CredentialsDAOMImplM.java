@@ -3,7 +3,7 @@ package dao.mongo.implementations;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.MongoDBConfig;
 import dao.mongo.CredentialsDAOM;
 import domain.model.ErrorC;

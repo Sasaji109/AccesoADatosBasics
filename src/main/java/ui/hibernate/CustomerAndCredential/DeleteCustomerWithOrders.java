@@ -1,7 +1,7 @@
 package ui.hibernate.CustomerAndCredential;
 
-import domain.model.hibernate.Credentials;
-import domain.model.hibernate.Customers;
+import domain.model.hibernate.CredentialsH;
+import domain.model.hibernate.CustomersH;
 import domain.services.hibernate.CustomerService;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
@@ -21,8 +21,8 @@ public class DeleteCustomerWithOrders {
         SeContainer container = SeContainerInitializer.newInstance().initialize();
         DeleteCustomerWithOrders deleteCustomer = container.select(DeleteCustomerWithOrders.class).get();
 
-        Credentials credentials = new Credentials(47, "sam","sam");
-        Customers customer = new Customers(47,"Sam","San","gmail","3452525", LocalDate.now(), credentials);
+        CredentialsH credentialsH = new CredentialsH(47, "sam","sam");
+        CustomersH customer = new CustomersH(47,"Sam","San","gmail","3452525", LocalDate.now(), credentialsH);
         int right = deleteCustomer.customerService.delete(customer, true).get();
         System.out.println(right);
     }

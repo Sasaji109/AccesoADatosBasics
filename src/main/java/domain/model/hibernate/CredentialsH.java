@@ -12,8 +12,8 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "credentials", schema = "example_exam_2eva")
-@NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_CREDENTIALS", query = "from Credentials") })
-public class Credentials {
+@NamedQueries({ @NamedQuery(name = "HQL_GET_ALL_CREDENTIALS", query = "from CredentialsH") })
+public class CredentialsH {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Credentials {
     @Column(name = "password")
     private String password;
 
-    public Credentials(Integer customerId, String username, String password) {
+    public CredentialsH(Integer customerId, String username, String password) {
         this.customerId = customerId;
         this.username = username;
         this.password = password;

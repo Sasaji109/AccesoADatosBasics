@@ -3,7 +3,7 @@ package pruebasHibernateMongo.daos;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import common.configuration.MongoDBConfig;
 import domain.model.ErrorC;

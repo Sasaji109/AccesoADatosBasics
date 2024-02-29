@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.UpdateResult;
-import common.Constants;
+import com.mongodb.client.model.Filters;
+import common.uitls.Constants;
 import common.configuration.MongoDBConfig;
 import dao.mongo.CustomersDAOM;
 import domain.adapter.ObjectIdAdapter;
+import domain.adapter.LocalDateAdapter;
+import domain.adapter.LocalDateTimeAdapter;
 import domain.model.ErrorC;
 import domain.model.mongo.CredentialsMongo;
 import domain.model.mongo.CustomersMongo;
@@ -17,6 +19,7 @@ import jakarta.inject.Inject;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
@@ -26,6 +29,8 @@ import static com.mongodb.client.model.Projections.fields;
 public class CustomersDAOMImplM implements CustomersDAOM {
 
     private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(ObjectId.class, new ObjectIdAdapter())
             .create();
 
@@ -134,16 +139,10 @@ public class CustomersDAOMImplM implements CustomersDAOM {
 
         try {
             MongoCollection<Document> collectionCustomers = mongoDatabase.getCollection("customers");
-            String customerJson = gson.toJson(customer);
-            Document customerDocument = Document.parse(customerJson);
-            Document filter = new Document("_id", customer.get_id());
-            UpdateResult updateResult = collectionCustomers.replaceOne(filter, customerDocument);
+            Document customerDocument = Document.parse(gson.toJson(customer));
+            collectionCustomers.replaceOne(Filters.eq("_id", customer.get_id()), customerDocument);
 
-            if (updateResult.getModifiedCount() > 0) {
-                either = Either.right(1);
-            } else {
-                either = Either.left(new ErrorC(5, Constants.MONGO_ERROR, LocalDate.now()));
-            }
+            either = Either.right(1);
         } catch (Exception e) {
             either = Either.left(new ErrorC(5, Constants.MONGO_ERROR + e.getMessage(), LocalDate.now()));
         }

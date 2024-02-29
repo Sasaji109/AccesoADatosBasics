@@ -3,7 +3,7 @@ package common.configuration;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import common.Constants;
+import common.uitls.Constants;
 
 public class MongoDBConfig {
 

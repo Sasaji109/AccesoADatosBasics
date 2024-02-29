@@ -1,10 +1,10 @@
 package dao.hibernate.implementations;
 
-import common.Constants;
+import common.uitls.Constants;
 import common.configuration.JPAUtil;
 import dao.hibernate.MenuItemsDAO;
 import domain.model.ErrorC;
-import domain.model.hibernate.MenuItem;
+import domain.model.hibernate.MenuItemH;
 import io.vavr.control.Either;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -23,15 +23,15 @@ public class MenuItemsDAOImpl implements MenuItemsDAO {
     }
 
     @Override
-    public Either<ErrorC, List<MenuItem>> getAll() {
-        Either<ErrorC, List<MenuItem>> either;
+    public Either<ErrorC, List<MenuItemH>> getAll() {
+        Either<ErrorC, List<MenuItemH>> either;
 
-        List<MenuItem> menuItems;
+        List<MenuItemH> menuItemHS;
         em = jpaUtil.getEntityManager();
 
         try {
-            menuItems = em.createQuery("FROM MenuItem", MenuItem.class).getResultList();
-            either = Either.right(menuItems);
+            menuItemHS = em.createQuery("FROM MenuItemH", MenuItemH.class).getResultList();
+            either = Either.right(menuItemHS);
         }
         catch(Exception e) {
             either = Either.left(new ErrorC(5, Constants.SQL_ERROR + e.getMessage(), LocalDate.now()));
@@ -40,17 +40,17 @@ public class MenuItemsDAOImpl implements MenuItemsDAO {
     }
 
     @Override
-    public Either<ErrorC, MenuItem> getByName(String name) {
-        Either<ErrorC, MenuItem> either;
+    public Either<ErrorC, MenuItemH> getByName(String name) {
+        Either<ErrorC, MenuItemH> either;
 
-        MenuItem menuItem;
+        MenuItemH menuItemH;
         em = jpaUtil.getEntityManager();
 
         try {
-            menuItem = em.createQuery("FROM MenuItem WHERE name = :name", MenuItem.class)
+            menuItemH = em.createQuery("FROM MenuItemH WHERE name = :name", MenuItemH.class)
                     .setParameter("name", name)
                     .getSingleResult();
-            either = Either.right(menuItem);
+            either = Either.right(menuItemH);
         } catch (NoResultException e) {
             either = Either.left(new ErrorC(404, Constants.MENU_ITEM_NOT_FOUND, LocalDate.now()));
         } catch (Exception e) {

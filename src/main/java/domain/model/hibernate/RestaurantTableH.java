@@ -13,7 +13,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "restaurant_tables", schema = "example_exam_2eva")
-public class RestaurantTable {
+public class RestaurantTableH {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,7 +23,7 @@ public class RestaurantTable {
     @Column(name = "number_of_seats")
     private int numSeats;
 
-    public RestaurantTable(int id, int numSeats) {
+    public RestaurantTableH(int id, int numSeats) {
         this.id = id;
         this.numSeats = numSeats;
     }
