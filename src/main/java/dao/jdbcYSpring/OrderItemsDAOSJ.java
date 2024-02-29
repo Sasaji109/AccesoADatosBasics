@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface OrderItemsDAOSJ {
     Either<ErrorC, List<OrderItem>> getAllJDBC();
-    Either<ErrorC, OrderItem> getSpring(int id);
+    Either<ErrorC, OrderItem> getJDBC(Integer id);
+    Either<ErrorC, List<OrderItem>> getAllSpring();
+    Either<ErrorC, OrderItem> getSpring(Integer id);
     Either<ErrorC, Integer> deleteJDBC(OrderItem orderItem);
 }

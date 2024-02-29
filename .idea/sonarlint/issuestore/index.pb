@@ -376,3 +376,13 @@ j
 0src/main/java/domain/model/hibernate/OrderH.java,4\c\4cee4e74c3badf928785321509d383d9ece9f6c3
 w
 Gsrc/main/java/ui/jdbc/OrderAndOrderItems/GetAllOrdersAndOrderItems.java,c\4\c48c7a1cf39c7c8e69dad568189c05e8a50ecf31
+o
+?src/main/java/ui/jdbc/OrderItems/GetAllOrdersAndOrderItems.java,7\3\73e30c249df82698bf1a5278a40d9b0d40e02db9
+j
+:src/main/java/ui/jdbc/OrderItems/GetAllOrderItemsJDBC.java,b\0\b084e6ffde243c8fb2c6121f55159f3d5b818f64
+n
+>src/main/java/ui/spring/OrderItems/GetAllOrderItemsSpring.java,7\e\7e6c3313aec9579aa306050590f2f55f8a38a45a
+j
+:src/main/java/ui/spring/OrderItems/GetOrderItemSpring.java,7\e\7ef15bfaadcdf58bfd3e0d345d99b35807da0d3b
+f
+6src/main/java/ui/jdbc/OrderItems/GetOrderItemJDBC.java,9\8\98f500a95586ae0b7d73918be9a102c81d54aa24

@@ -26,7 +26,6 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
     }
 
     @Override
-
     public Either<ErrorC, List<OrderItem>> getAllJDBC() {
         Either<ErrorC, List<OrderItem>> either;
 
@@ -40,6 +39,9 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
                 int orderId = rs.getInt("order_id");
                 MenuItem menuItem = new MenuItem();
                 menuItem.setId(rs.getInt("menu_item_id"));
+                menuItem.setName(rs.getString("name"));
+                menuItem.setDescription(rs.getString("description"));
+                menuItem.setPrice(rs.getDouble("price"));
                 int quantity = rs.getInt("quantity");
 
                 OrderItem orderItem = new OrderItem(orderItemId,orderId,menuItem,quantity);
@@ -52,6 +54,7 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
         return either;
     }
 
+    @Override
     public Either<ErrorC, List<OrderItem>> getAllSpring() {
         Either<ErrorC, List<OrderItem>> either;
         try {
@@ -64,12 +67,13 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
         return either;
     }
 
-    public Either<ErrorC, OrderItem> getJDBC(OrderItem orderItem) {
+    @Override
+    public Either<ErrorC, OrderItem> getJDBC(Integer id) {
         Either<ErrorC, OrderItem> either;
 
         try (Connection con = db.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(SQLQueries.SELECT_ORDERITEM_BY_ID)) {
-            preparedStatement.setInt(1, orderItem.getId());
+            preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
@@ -77,6 +81,9 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
                 int orderId = rs.getInt("order_id");
                 MenuItem menuItem = new MenuItem();
                 menuItem.setId(rs.getInt("menu_item_id"));
+                menuItem.setName(rs.getString("name"));
+                menuItem.setDescription(rs.getString("description"));
+                menuItem.setPrice(rs.getDouble("price"));
                 int quantity = rs.getInt("quantity");
 
                 OrderItem foundOrderItem = new OrderItem(orderItemId,orderId,menuItem,quantity);
@@ -91,7 +98,7 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
     }
 
     @Override
-    public Either<ErrorC, OrderItem> getSpring(int id) {
+    public Either<ErrorC, OrderItem> getSpring(Integer id) {
         Either<ErrorC, OrderItem> either;
         try {
             JdbcTemplate jtm = new JdbcTemplate(db.getDataSource());
@@ -126,6 +133,5 @@ public class OrderItemsDAOImplSJ implements OrderItemsDAOSJ {
         }
         return either;
     }
-
 }
 

@@ -36,7 +36,13 @@ public class SQLQueries {
     public static final String SELECT_ORDERITEMS = "SELECT oi.order_item_id, oi.order_id, oi.menu_item_id, oi.quantity, " +
                     "mi.menu_item_id, mi.name, mi.description, mi.price FROM order_items AS oi " +
                     "INNER JOIN menu_items AS mi ON oi.order_item_id = mi.menu_item_id";
-    public static final String SELECT_ORDERITEM_BY_ID = "select * from order_items where order_id= ?";
+    public static final String SELECT_ORDERITEM_BY_ID =
+            "SELECT oi.order_item_id, oi.order_id, oi.menu_item_id, oi.quantity, " +
+                    "mi.menu_item_id, mi.name, mi.description, mi.price " +
+                    "FROM order_items AS oi " +
+                    "INNER JOIN menu_items AS mi ON oi.menu_item_id = mi.menu_item_id " +
+                    "WHERE oi.order_item_id = ?";
+
     public static final String INSERT_ORDERITEM = "insert INTO order_items (order_item_id, order_id, menu_item_id, quantity) VALUES (?, ?, ?, ?)";
     public static final String DELETE_ORDERITEM = "delete from order_items WHERE order_item_id = ?";
     public static final String DELETE_ORDER_ITEMS_BY_ORDERS = "delete from order_items WHERE order_id = ?";

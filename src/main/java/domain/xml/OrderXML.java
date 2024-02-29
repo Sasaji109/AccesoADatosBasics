@@ -1,50 +1,34 @@
 package domain.xml;
 
-import jakarta.persistence.*;
-import lombok.Getter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
-@Entity
-@Table(name = "orders", schema = "example_exam_2eva")
+@AllArgsConstructor
+@XmlRootElement(name = "order")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderXML {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "order_id")
+    @XmlElement(name = "orderId")
     private Integer orderId;
 
-    @Column(name = "order_date")
+    @XmlElement(name = "orderDate")
     private LocalDateTime orderDate;
 
-    @Column(name = "customer_id")
+    @XmlElement(name = "customerId")
     private Integer customerId;
 
-    @Column(name = "table_id")
+    @XmlElement(name = "tableId")
     private Integer tableId;
 
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @XmlElement(name = "orderItem")
     private List<OrderItemXML> orderItemHList;
-
-    public OrderXML(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId) {
-        this.orderId = orderId;
-        this.orderDate = orderDate;
-        this.customerId = customerId;
-        this.tableId = tableId;
-    }
-
-    public OrderXML(Integer orderId, LocalDateTime orderDate, Integer customerId, Integer tableId, List<OrderItemXML> orderItemHList) {
-        this.orderId = orderId;
-        this.orderDate = orderDate;
-        this.customerId = customerId;
-        this.tableId = tableId;
-        this.orderItemHList = orderItemHList;
-    }
 }

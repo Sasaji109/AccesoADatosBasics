@@ -1,38 +1,29 @@
 package domain.xml;
 
-import jakarta.persistence.*;
-import lombok.Getter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
-@Entity
-@Table(name = "order_items", schema = "example_exam_2eva")
+@AllArgsConstructor
+@XmlRootElement(name = "orderItem")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderItemXML {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "order_item_id")
+    @XmlElement(name = "id")
     private Integer id;
 
-    @Column(name = "order_id")
+    @XmlElement(name = "orderId")
     private Integer orderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_item_id")
-    private MenuItemXML menuItemH;
+    @XmlElement(name = "menuItem")
+    private MenuItemXML menuItemXML;
 
-    @Column(name = "quantity")
+    @XmlElement(name = "quantity")
     private Integer quantity;
-
-    public OrderItemXML(Integer id, Integer orderId, MenuItemXML menuItemH, Integer quantity) {
-        this.id = id;
-        this.orderId = orderId;
-        this.menuItemH = menuItemH;
-        this.quantity = quantity;
-    }
 }
