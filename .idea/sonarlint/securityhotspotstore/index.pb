@@ -386,3 +386,13 @@ j
 :src/main/java/ui/spring/OrderItems/GetOrderItemSpring.java,7\e\7ef15bfaadcdf58bfd3e0d345d99b35807da0d3b
 f
 6src/main/java/ui/jdbc/OrderItems/GetOrderItemJDBC.java,9\8\98f500a95586ae0b7d73918be9a102c81d54aa24
+s
+Csrc/main/java/dao/transfers/implementations/BackupEnDocumentos.java,a\9\a91a8793d6f677a8d1406fc0ee02ad3fc56e2bf3
+w
+Gsrc/main/java/dao/transfers/implementations/BackupEnDocumentosImpl.java,8\7\871ed745840508784b60ab194ea4f950f6b7a4a9
+c
+3src/main/java/dao/transfers/BackupEnDocumentos.java,0\a\0ac648a083e2c2239026d624d6c03b525b7beb3a
+i
+9src/main/java/domain/services/XMLyTXT/BackupServices.java,3\f\3f92403437f026a5776e8c397824624908e917b6
+]
+-src/main/java/ui/XMLyTXT/BackupOrdersXML.java,3\e\3e678537ad831712992ab0ac987c8f05905a3af6

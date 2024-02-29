@@ -7,6 +7,7 @@ import domain.model.ErrorC;
 import domain.model.hibernate.CredentialsH;
 import domain.model.hibernate.CustomersH;
 import domain.model.hibernate.OrderH;
+import domain.model.springJDBC.Order;
 import domain.xml.OrderXML;
 import domain.xml.OrdersXML;
 import io.vavr.control.Either;
@@ -134,12 +135,12 @@ public class CustomersDAOImpl implements CustomersDAO {
 
         try {
             if (orders) {
-                List<OrderXML> ordersList = em.createQuery("SELECT o FROM OrderXML o WHERE o.customerId = :customerId", OrderXML.class)
+                List<OrderH> ordersList = em.createQuery("SELECT o FROM OrderH o WHERE o.customerId = :customerId", OrderH.class)
                         .setParameter("customerId", customer.getCustomersId()).getResultList();
 
-                backupOrdersToXml(ordersList, customer.getFirstName());
+                //backupOrdersToXml(ordersList, customer.getFirstName());
 
-                for (OrderXML order : ordersList) {
+                for (OrderH order : ordersList) {
                     em.remove(em.merge(order));
                 }
             }
