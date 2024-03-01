@@ -1,4 +1,4 @@
-package domain.xml;
+package domain.model.xml;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -7,15 +7,23 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "orders")
+@XmlRootElement(name = "orderItem")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OrdersXML {
+public class OrderItemXML {
 
-    @XmlElement(name = "order")
-    private List<OrderXML> ordersList;
+    @XmlElement(name = "id")
+    private Integer id;
+
+    @XmlElement(name = "orderId")
+    private Integer orderId;
+
+    @XmlElement(name = "menuItem")
+    private MenuItemXML menuItemXML;
+
+    @XmlElement(name = "quantity")
+    private Integer quantity;
 }

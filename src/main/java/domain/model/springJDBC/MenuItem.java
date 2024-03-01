@@ -12,4 +12,8 @@ public class MenuItem {
     private Double price;
 
     public MenuItem() {}
+
+    public String toStringTextFile() {
+        return id + ";" + name + ";" + description + ";" + price;
+    }
 }

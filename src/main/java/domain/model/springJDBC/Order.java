@@ -15,4 +15,20 @@ public class Order {
     private List<OrderItem> orderItemList;
 
     public Order() {}
+
+    public String toStringTextFile() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(orderId).append(";")
+                .append(orderDate).append(";")
+                .append(customerId).append(";")
+                .append(tableId);
+
+        if (orderItemList != null) {
+            for (OrderItem orderItem : orderItemList) {
+                stringBuilder.append("\n").append(orderItem.toStringTextFile());
+            }
+        }
+
+        return stringBuilder.toString();
+    }
 }

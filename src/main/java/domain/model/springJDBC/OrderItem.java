@@ -12,4 +12,8 @@ public class OrderItem {
     private Integer quantity;
 
     public OrderItem() {}
+
+    public String toStringTextFile() {
+        return id + ";" + orderId + ";" + menuItem.toStringTextFile() + ";" + quantity;
+    }
 }

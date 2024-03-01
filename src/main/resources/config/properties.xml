@@ -3,4 +3,5 @@
 <properties>
 <comment>XML file</comment>
     <entry key="pathFactionsXML">data/factions.xml</entry>
+    <entry key="pathListOrders">data/orders.csv</entry>
 </properties>

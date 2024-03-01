@@ -1,4 +1,4 @@
-package domain.xml;
+package domain.model.xml;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
